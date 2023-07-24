@@ -20,7 +20,7 @@ def client():
 def test_first_three(client):
     response = client.get('/members')
     members = json.loads(response.data)
-    assert len(members) == 3
+    assert len(members["family"]) == 3
 
 @pytest.mark.it("Implement method POST /member to add a new member")
 def test_add_implementation(client):
@@ -51,13 +51,13 @@ def test_get_members_exist(client):
 def test_get_members_returns_list(client):
     response = client.get('/members')
     data = json.loads(response.data)
-    assert isinstance(data, list)
+    assert isinstance(data["family"], list)
 
 @pytest.mark.it("We added two members using POST /member, when calling the GET /members should get a list of length == 5")
 def test_get_members_returns_list_of_five(client):
     response = client.get('/members')
     members = json.loads(response.data)
-    assert len(members) == 5
+    assert len(members["family"]) == 5
 
 @pytest.mark.it("Method GET /member/<int:id> should exist")
 def test_get_single_member_implemented(client):
@@ -76,19 +76,19 @@ def test_get_single_member_has_keys(client):
     response = client.get('/member/3443')
     data = json.loads(response.data)
 
-    assert data is not None
-    assert "first_name" in data
-    assert "id" in data
-    assert "age" in data
-    assert "lucky_numbers" in data
+    assert data["family"] is not None
+    assert "first_name" in data["family"]
+    assert "id" in data["family"]
+    assert "age" in data["family"]
+    assert "lucky_numbers" in data["family"]
 
 @pytest.mark.it("Method GET /member/3443 should return Tommy")
 def test_get_first_member_tommy(client):
     response = client.get('/member/3443')
     data = json.loads(response.data)
-    assert data is not None
-    assert "first_name" in data
-    assert data["first_name"] == "Tommy"
+    assert data["family"] is not None
+    assert "first_name" in data["family"]
+    assert data["family"]["first_name"] == "Tommy"
 
 @pytest.mark.it("Implement method DELETE /member/<int:id> to delete a family member")
 def test_delete_member(client):
@@ -110,4 +110,4 @@ def test_delete_response(client):
 def test_get_members_returns_list_of_four(client):
     response = client.get('/members')
     members = json.loads(response.data)
-    assert len(members) == 4
+    assert len(members["family"]) == 4
